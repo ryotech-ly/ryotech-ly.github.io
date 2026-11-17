@@ -1,0 +1,21 @@
+{
+  "name": "ryotech-ly.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ryotech corporate landing page (static, bilingual EN/AR) served by GitHub Pages at ryotech.ly",
+  "scripts": {
+    "build": "npm run build:pages && npm run build:css",
+    "build:pages": "node tools/build-pages.mjs",
+    "build:css": "tailwindcss -i ./src/input.css -o ./assets/css/main.css --minify",
+    "watch": "tailwindcss -i ./src/input.css -o ./assets/css/main.css --watch",
+    "assets": "python tools/generate_assets.py"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.5",
+    "tailwindcss": "4.3.5"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

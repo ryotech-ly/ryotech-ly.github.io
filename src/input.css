@@ -1,0 +1,165 @@
+@import "tailwindcss" source(none);
+@source "./page.html";
+@source "../index.html";
+@source "../404.html";
+
+/*
+  Metric-matched stand-in for Inter while the web font loads (display=swap), so the swap does not reflow text.
+  Local Arial (or its metric clones) scaled to Inter's average advance width on this page's copy
+  (regular: Inter 400/500, bold: Inter 600/700), with Inter's ascent/descent (1984/494 per 2048) divided by that scale.
+  Latin-only unicode-range (Inter's latin subset), so Arabic always falls through to Cairo.
+*/
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans"), local("Arimo");
+  font-weight: 400;
+  size-adjust: 107.1%;
+  ascent-override: 90.45%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("LiberationSans-Bold"), local("Arimo Bold"), local("Arimo-Bold");
+  font-weight: 700;
+  size-adjust: 100.9%;
+  ascent-override: 96.01%;
+  descent-override: 23.91%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@theme {
+  --font-sans: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Inter first: Latin terms, digits and punctuation inside Arabic copy match the Latin islands, and Arabic glyphs fall through to Cairo (no Cairo Latin download). */
+  --font-arabic: "Inter", "Inter Fallback", "Cairo", ui-sans-serif, system-ui, "Segoe UI", Tahoma, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "Cascadia Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --color-ink-950: #0a1628;
+  --color-ink-900: #0d1c33;
+  --color-ink-800: #12243f;
+  --color-ink-700: #1a3152;
+  --color-ink-600: #24406a;
+
+  --color-brand-200: #a5f3fc;
+  --color-brand-300: #67e8f9;
+  --color-brand-400: #22d3ee;
+  --color-brand-500: #00b4d8;
+  --color-brand-600: #0891b2;
+  --color-brand-700: #0e7490;
+
+  --color-steel-200: #d5dde7;
+  --color-steel-300: #b4c0ce;
+  --color-steel-400: #94a3b8;
+}
+
+/* Arabic-only typographic tweaks, keyed to language (not direction): ar:leading-[1.9], ar:font-bold, ... */
+@custom-variant ar (&:lang(ar));
+
+@layer base {
+  html {
+    background-color: var(--color-ink-950);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    /* Keeps anchor targets and keyboard-focused elements clear of the sticky header (WCAG 2.4.11), and focus rings off the bottom edge. */
+    scroll-padding-block: 6rem 1rem;
+  }
+
+  html:lang(ar) {
+    --font-sans: var(--font-arabic);
+  }
+
+  :lang(ar) {
+    letter-spacing: 0 !important;
+  }
+
+  html:lang(ar) body {
+    line-height: 1.8;
+  }
+
+
+  /* Language islands keep their own typeface: Latin names inside Arabic use Inter, Arabic names inside English use Cairo. */
+  :where([lang="en"]) {
+    font-family: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+
+  :where([lang="ar"]) {
+    font-family: var(--font-arabic);
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-brand-400) 35%, transparent);
+    color: #fff;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+}
+
+/* Static gradient hairline (cyan at the top fading to steel), drawn on one element via background-clip layers. */
+@utility edge-frame {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--color-ink-900), var(--color-ink-900)) padding-box,
+    linear-gradient(180deg, rgb(34 211 238 / 0.3), rgb(148 163 184 / 0.14) 40%, rgb(148 163 184 / 0.07)) border-box;
+}
+
+/* Fades the opaque square hero emblem (background baked as ink-950) into the plain ink-950 page. */
+@utility emblem-mask {
+  mask-image: radial-gradient(closest-side, #000 70%, transparent 99%);
+}
+
+/*
+  Banner lockup "Ryotech | ريوتك" on the hero title without adding text to the h1:
+  the counterpart-language name is CSS generated content with empty alt text, so the
+  heading's accessible name and indexed text stay "Ryotech Enterprise Software & ...".
+  The divider hairline sits on the pseudo-element's inline-start edge.
+*/
+@utility hero-name {
+  &::after {
+    content: "ريوتك" / "";
+    display: inline-block;
+    margin-inline-start: 0.24em;
+    padding-inline-start: 0.26em;
+    font-family: var(--font-arabic);
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--color-steel-300);
+    background: linear-gradient(rgb(255 255 255 / 0.2), rgb(255 255 255 / 0.2)) no-repeat 0 50% / 1px 0.6em;
+  }
+
+  &:lang(ar)::after {
+    content: "Ryotech" / "";
+    font-family: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    letter-spacing: -0.025em;
+    background-position: 100% 50%;
+  }
+}
+
+/* Soft light pool behind the CTA panel copy. */
+@utility cta-light {
+  background:
+    radial-gradient(40rem 20rem at 50% 0%, rgb(34 211 238 / 0.1), transparent 70%),
+    radial-gradient(30rem 16rem at 50% 100%, rgb(8 145 178 / 0.07), transparent 70%);
+}
+
+/* Latin face for short Latin labels that sit inside Arabic UI without their own lang attribute (EN | AR switch). */
+@utility font-latin {
+  font-family: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}

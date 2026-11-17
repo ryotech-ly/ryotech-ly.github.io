@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scheme-dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+      (function () {
+        var url = new URL(window.location.href);
+        var asked = url.searchParams.get("lang");
+        url.searchParams.delete("lang");
+        var stored = null;
+        try {
+          stored = window.localStorage.getItem("ryotech-lang");
+        } catch (e) {}
+        var lang = asked === "ar" || asked === "en" ? asked : stored === "ar" ? "ar" : "en";
+        window.location.replace("/" + lang + "/" + url.search + url.hash);
+      })();
+    </script>
+    <noscript><meta http-equiv="refresh" content="0; url=/en/"></noscript>
+    <title>Ryotech — Enterprise Software &amp; Distributed Systems Solutions</title>
+    <meta name="description" content="Ryotech engineers FinTech platforms, microservices, and distributed systems — robust financial infrastructure built for high availability and auditability.">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#0a1628">
+    <link rel="canonical" href="https://ryotech.ly/en/">
+    <link rel="alternate" hreflang="en" href="https://ryotech.ly/en/">
+    <link rel="alternate" hreflang="ar" href="https://ryotech.ly/ar/">
+    <link rel="alternate" hreflang="x-default" href="https://ryotech.ly/en/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ryotech">
+    <meta property="og:url" content="https://ryotech.ly/en/">
+    <meta property="og:title" content="Ryotech — Enterprise Software &amp; Distributed Systems Solutions">
+    <meta property="og:description" content="FinTech platforms, microservices, and distributed systems engineered for high availability and auditability.">
+    <meta property="og:image" content="https://ryotech.ly/assets/img/og-image.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Ryotech logo with the tagline Enterprise Software &amp; Distributed Systems Solutions">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="ar_LY">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ryotech — Enterprise Software &amp; Distributed Systems Solutions">
+    <meta name="twitter:description" content="FinTech platforms, microservices, and distributed systems engineered for high availability and auditability.">
+    <meta name="twitter:image" content="https://ryotech.ly/assets/img/og-image.jpg">
+    <meta name="twitter:image:alt" content="Ryotech logo with the tagline Enterprise Software &amp; Distributed Systems Solutions">
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/assets/css/main.css">
+  </head>
+  <body class="grid min-h-svh place-items-center bg-ink-950 px-4 font-sans text-steel-300">
+    <main class="flex flex-col items-center gap-6 text-center">
+      <img src="/assets/img/logo-mark-192.webp" width="96" height="96" alt="Ryotech">
+      <p class="flex flex-wrap items-center justify-center gap-3 text-sm font-semibold">
+        <a href="/en/" hreflang="en" class="rounded-lg bg-brand-400 px-5 py-2.5 text-ink-950 transition-colors duration-200 hover:bg-brand-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-400">English</a>
+        <a href="/ar/" hreflang="ar" lang="ar" class="rounded-lg border border-white/10 px-5 py-2.5 text-white transition-colors duration-200 hover:border-brand-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-400">العربية</a>
+      </p>
+    </main>
+  </body>
+</html>
